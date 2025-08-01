@@ -2,12 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Zombie Apocalypse Runner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mobile Zombie Apocalypse</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
     }
     
     body {
@@ -15,6 +22,9 @@
       overflow: hidden;
       font-family: 'Arial', sans-serif;
       height: 100vh;
+      width: 100vw;
+      position: fixed;
+      touch-action: manipulation;
     }
     
     .game-container {
@@ -38,18 +48,18 @@
       position: absolute;
       bottom: 0;
       width: 100%;
-      height: 200px;
+      height: 25vh;
       background: linear-gradient(180deg, #654321 0%, #4a3016 50%, #2d1b0d 100%);
-      border-top: 5px solid #8b4513;
+      border-top: 8px solid #8b4513;
     }
     
     .ground-surface {
       position: absolute;
-      bottom: 200px;
+      bottom: 25vh;
       width: 100%;
-      height: 50px;
+      height: 8vh;
       background: #2d5016;
-      border-top: 3px solid #4a7c28;
+      border-top: 5px solid #4a7c28;
     }
     
     .environment {
@@ -61,39 +71,41 @@
     
     .tree {
       position: absolute;
-      bottom: 250px;
-      width: 40px;
-      height: 120px;
+      bottom: 33vh;
+      width: 12vw;
+      height: 25vh;
+      min-width: 60px;
+      min-height: 180px;
     }
     
     .tree-trunk {
       position: absolute;
       bottom: 0;
-      left: 15px;
-      width: 10px;
-      height: 60px;
+      left: 35%;
+      width: 30%;
+      height: 45%;
       background: #4a3016;
-      border-radius: 5px;
+      border-radius: 8px;
     }
     
     .tree-leaves {
       position: absolute;
       top: 0;
-      left: 5px;
-      width: 30px;
-      height: 80px;
+      left: 10%;
+      width: 80%;
+      height: 70%;
       background: #2d1b0d;
       border-radius: 50%;
-      border: 3px solid #1a0f06;
+      border: 4px solid #1a0f06;
     }
     
     .tree-leaves::before {
       content: '';
       position: absolute;
-      top: 10px;
-      left: 5px;
-      width: 20px;
-      height: 20px;
+      top: 20%;
+      left: 25%;
+      width: 50%;
+      height: 40%;
       background: #8B0000;
       border-radius: 50%;
       animation: decay-pulse 2s infinite;
@@ -101,56 +113,58 @@
     
     .vehicle {
       position: absolute;
-      bottom: 250px;
-      width: 100px;
-      height: 50px;
+      bottom: 33vh;
+      width: 20vw;
+      height: 12vh;
+      min-width: 120px;
+      min-height: 80px;
     }
     
     .car-body {
       position: absolute;
-      bottom: 15px;
-      width: 80px;
-      height: 25px;
+      bottom: 30%;
+      width: 85%;
+      height: 45%;
       background: linear-gradient(180deg, #333 0%, #111 100%);
-      border-radius: 10px;
-      border: 2px solid #666;
+      border-radius: 12px;
+      border: 3px solid #666;
     }
     
     .car-windows {
       position: absolute;
-      bottom: 20px;
-      left: 10px;
-      width: 60px;
-      height: 15px;
+      bottom: 35%;
+      left: 15%;
+      width: 70%;
+      height: 25%;
       background: #8B0000;
-      border-radius: 5px;
+      border-radius: 6px;
       opacity: 0.7;
     }
     
     .car-wheel {
       position: absolute;
       bottom: 0;
-      width: 20px;
-      height: 20px;
+      width: 25%;
+      height: 35%;
       background: #222;
       border-radius: 50%;
-      border: 3px solid #444;
+      border: 4px solid #444;
     }
     
     .car-wheel.left {
-      left: 10px;
+      left: 10%;
     }
     
     .car-wheel.right {
-      right: 10px;
+      right: 10%;
     }
     
     .car-damage {
       position: absolute;
-      top: 5px;
-      left: 20px;
-      width: 15px;
-      height: 15px;
+      top: 10%;
+      left: 40%;
+      width: 20%;
+      height: 20%;
       background: #8B0000;
       border-radius: 50%;
       animation: damage-smoke 3s infinite;
@@ -158,10 +172,12 @@
     
     .character {
       position: absolute;
-      bottom: 250px;
-      left: 150px;
-      width: 80px;
-      height: 120px;
+      bottom: 33vh;
+      left: 20vw;
+      width: 20vw;
+      height: 25vh;
+      min-width: 120px;
+      min-height: 180px;
       z-index: 10;
       transition: all 0.3s ease;
     }
@@ -179,24 +195,24 @@
     }
     
     .head {
-      width: 40px;
-      height: 40px;
+      width: 50%;
+      height: 35%;
       background: #f3c095;
       border-radius: 50%;
       position: relative;
       margin: 0 auto;
-      border: 2px solid #d4a574;
+      border: 3px solid #d4a574;
     }
     
     .helmet {
       position: absolute;
-      top: -5px;
-      left: -5px;
-      width: 50px;
-      height: 30px;
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 60%;
       background: #333;
       border-radius: 50% 50% 0 0;
-      border: 2px solid #666;
+      border: 3px solid #666;
     }
     
     .helmet.damaged {
@@ -206,17 +222,17 @@
     
     .eyes {
       position: absolute;
-      top: 15px;
-      left: 8px;
-      width: 24px;
-      height: 8px;
+      top: 40%;
+      left: 20%;
+      width: 60%;
+      height: 20%;
       display: flex;
       justify-content: space-between;
     }
     
     .eye {
-      width: 6px;
-      height: 6px;
+      width: 30%;
+      height: 100%;
       background: #00ff00;
       border-radius: 50%;
       animation: glow 2s infinite alternate;
@@ -228,24 +244,24 @@
     }
     
     .body {
-      width: 35px;
-      height: 50px;
+      width: 60%;
+      height: 45%;
       background: linear-gradient(180deg, #444 0%, #222 100%);
-      margin: 5px auto;
-      border-radius: 5px;
+      margin: 5% auto;
+      border-radius: 8px;
       position: relative;
-      border: 2px solid #666;
+      border: 3px solid #666;
     }
     
     .armor-vest {
       position: absolute;
-      top: 5px;
-      left: 2px;
-      width: 29px;
-      height: 30px;
+      top: 15%;
+      left: 8%;
+      width: 84%;
+      height: 70%;
       background: #1a472a;
-      border-radius: 3px;
-      border: 1px solid #2d5a3d;
+      border-radius: 5px;
+      border: 2px solid #2d5a3d;
     }
     
     .armor-vest.damaged {
@@ -256,26 +272,27 @@
     .legs {
       display: flex;
       justify-content: space-between;
-      width: 30px;
+      width: 50%;
       margin: 0 auto;
     }
     
     .leg {
-      width: 8px;
-      height: 25px;
+      width: 35%;
+      height: 20vh;
+      min-height: 40px;
       background: #333;
-      border-radius: 3px;
-      border: 1px solid #555;
+      border-radius: 6px;
+      border: 2px solid #555;
     }
     
     .weapon {
       position: absolute;
-      right: -25px;
-      top: 20px;
-      width: 35px;
-      height: 8px;
+      right: -45%;
+      top: 40%;
+      width: 60%;
+      height: 12%;
       background: linear-gradient(90deg, #666 0%, #333 100%);
-      border-radius: 2px;
+      border-radius: 4px;
       transform-origin: left center;
       transition: transform 0.1s ease;
     }
@@ -284,19 +301,19 @@
       content: '';
       position: absolute;
       right: 0;
-      top: -2px;
-      width: 8px;
-      height: 12px;
+      top: -30%;
+      width: 25%;
+      height: 160%;
       background: #444;
-      border-radius: 2px;
+      border-radius: 4px;
     }
     
     .muzzle-flash {
       position: absolute;
-      right: -15px;
-      top: -8px;
-      width: 20px;
-      height: 20px;
+      right: -40%;
+      top: -100%;
+      width: 80%;
+      height: 300%;
       background: radial-gradient(circle, #ffff00 0%, #ff6600 50%, transparent 70%);
       border-radius: 50%;
       opacity: 0;
@@ -309,9 +326,11 @@
     
     .zombie {
       position: absolute;
-      width: 60px;
-      height: 80px;
-      bottom: 250px;
+      width: 15vw;
+      height: 20vh;
+      min-width: 90px;
+      min-height: 140px;
+      bottom: 33vh;
       z-index: 8;
     }
     
@@ -320,70 +339,75 @@
     }
     
     .zombie-head {
-      width: 30px;
-      height: 30px;
+      width: 50%;
+      height: 35%;
       background: #4a5d23;
       border-radius: 50%;
       margin: 0 auto;
       position: relative;
-      border: 2px solid #2d3516;
+      border: 3px solid #2d3516;
     }
     
     .zombie-eyes {
       position: absolute;
-      top: 10px;
-      left: 6px;
-      width: 18px;
-      height: 6px;
+      top: 40%;
+      left: 20%;
+      width: 60%;
+      height: 20%;
       display: flex;
       justify-content: space-between;
     }
     
     .zombie-eye {
-      width: 4px;
-      height: 4px;
+      width: 30%;
+      height: 100%;
       background: #ff0000;
       border-radius: 50%;
       animation: zombie-glow 1s infinite alternate;
     }
     
     .zombie-body {
-      width: 25px;
-      height: 35px;
+      width: 60%;
+      height: 45%;
       background: #3d4a1f;
-      margin: 5px auto;
-      border-radius: 3px;
-      border: 2px solid #2d3516;
+      margin: 5% auto;
+      border-radius: 5px;
+      border: 3px solid #2d3516;
     }
     
     .zombie-legs {
       display: flex;
       justify-content: space-between;
-      width: 20px;
+      width: 50%;
       margin: 0 auto;
     }
     
     .zombie-leg {
-      width: 6px;
-      height: 15px;
+      width: 35%;
+      height: 15vh;
+      min-height: 30px;
       background: #2d3516;
-      border-radius: 2px;
+      border-radius: 4px;
     }
     
     .bullet {
       position: absolute;
-      width: 8px;
-      height: 3px;
+      width: 4vw;
+      height: 2vh;
+      min-width: 20px;
+      min-height: 12px;
       background: #ffff00;
       border-radius: 50%;
       z-index: 9;
-      box-shadow: 0 0 10px #ffff00;
+      box-shadow: 0 0 15px #ffff00;
     }
     
     .explosion {
       position: absolute;
-      width: 100px;
-      height: 100px;
+      width: 25vw;
+      height: 25vw;
+      min-width: 150px;
+      min-height: 150px;
       border-radius: 50%;
       z-index: 11;
       pointer-events: none;
@@ -391,35 +415,38 @@
     
     .bomb {
       position: absolute;
-      width: 20px;
-      height: 20px;
+      width: 8vw;
+      height: 8vw;
+      min-width: 40px;
+      min-height: 40px;
       background: #333;
       border-radius: 50%;
-      border: 3px solid #666;
+      border: 4px solid #666;
       z-index: 9;
     }
     
     .bomb::before {
       content: '';
       position: absolute;
-      top: -8px;
+      top: -25%;
       left: 50%;
       transform: translateX(-50%);
-      width: 2px;
-      height: 8px;
+      width: 8%;
+      height: 25%;
       background: #ff6600;
       animation: fuse 2s linear infinite;
     }
     
     .health-bar {
       position: absolute;
-      top: 20px;
-      left: 20px;
-      width: 200px;
-      height: 20px;
+      top: 3vh;
+      left: 3vw;
+      width: 50vw;
+      height: 6vh;
+      min-height: 30px;
       background: #333;
-      border: 2px solid #666;
-      border-radius: 10px;
+      border: 3px solid #666;
+      border-radius: 15px;
       overflow: hidden;
       z-index: 20;
     }
@@ -428,7 +455,7 @@
       height: 100%;
       background: linear-gradient(90deg, #00ff00 0%, #ffff00 50%, #ff0000 100%);
       transition: width 0.3s ease;
-      border-radius: 8px;
+      border-radius: 12px;
     }
     
     .health-text {
@@ -442,19 +469,21 @@
       justify-content: center;
       color: white;
       font-weight: bold;
-      font-size: 12px;
-      text-shadow: 1px 1px 2px #000;
+      font-size: 4vw;
+      min-font-size: 16px;
+      text-shadow: 2px 2px 4px #000;
     }
     
     .progress-bar {
       position: absolute;
-      top: 50px;
-      left: 20px;
-      width: 300px;
-      height: 10px;
+      top: 10vh;
+      left: 3vw;
+      width: 60vw;
+      height: 3vh;
+      min-height: 15px;
       background: #333;
-      border: 1px solid #666;
-      border-radius: 5px;
+      border: 2px solid #666;
+      border-radius: 8px;
       overflow: hidden;
       z-index: 20;
     }
@@ -468,47 +497,27 @@
     
     .hud {
       position: absolute;
-      top: 80px;
-      left: 20px;
+      top: 15vh;
+      left: 3vw;
       color: #00ff00;
       font-family: 'Courier New', monospace;
-      font-size: 16px;
+      font-size: 4.5vw;
+      min-font-size: 18px;
       text-shadow: 0 0 10px #00ff00;
       z-index: 20;
+      line-height: 1.2;
     }
     
-    .crosshair {
+    .distance-marker {
       position: absolute;
-      width: 30px;
-      height: 30px;
-      border: 2px solid #ff0000;
-      border-radius: 50%;
-      z-index: 15;
-      pointer-events: none;
-      opacity: 0.7;
-    }
-    
-    .crosshair::before,
-    .crosshair::after {
-      content: '';
-      position: absolute;
-      background: #ff0000;
-    }
-    
-    .crosshair::before {
-      top: 50%;
-      left: 5px;
-      width: 20px;
-      height: 2px;
-      transform: translateY(-50%);
-    }
-    
-    .crosshair::after {
-      left: 50%;
-      top: 5px;
-      width: 2px;
-      height: 20px;
-      transform: translateX(-50%);
+      top: 15vh;
+      right: 3vw;
+      color: #ffff00;
+      font-family: 'Courier New', monospace;
+      font-size: 5vw;
+      min-font-size: 20px;
+      text-shadow: 0 0 10px #ffff00;
+      z-index: 20;
     }
     
     .damage-indicator {
@@ -517,23 +526,149 @@
       left: 50%;
       transform: translate(-50%, -50%);
       color: #ff0000;
-      font-size: 24px;
+      font-size: 8vw;
+      min-font-size: 32px;
       font-weight: bold;
-      text-shadow: 2px 2px 4px #000;
+      text-shadow: 3px 3px 6px #000;
       opacity: 0;
       z-index: 25;
       pointer-events: none;
     }
     
-    .distance-marker {
+    .mobile-controls {
       position: absolute;
-      top: 70px;
-      right: 20px;
-      color: #ffff00;
-      font-family: 'Courier New', monospace;
-      font-size: 18px;
-      text-shadow: 0 0 10px #ffff00;
-      z-index: 20;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 25vh;
+      z-index: 30;
+      pointer-events: none;
+    }
+    
+    .joystick {
+      position: absolute;
+      bottom: 5vh;
+      left: 5vw;
+      width: 20vw;
+      height: 20vw;
+      min-width: 100px;
+      min-height: 100px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      pointer-events: all;
+      touch-action: none;
+    }
+    
+    .joystick-knob {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 40%;
+      height: 40%;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    
+    .fire-button {
+      position: absolute;
+      bottom: 5vh;
+      right: 5vw;
+      width: 18vw;
+      height: 18vw;
+      min-width: 90px;
+      min-height: 90px;
+      background: rgba(255, 0, 0, 0.7);
+      border: 3px solid rgba(255, 0, 0, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 6vw;
+      min-font-size: 24px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px #000;
+      pointer-events: all;
+      touch-action: manipulation;
+      user-select: none;
+    }
+    
+    .fire-button:active {
+      transform: scale(0.95);
+      background: rgba(255, 0, 0, 0.9);
+    }
+    
+    .bomb-button {
+      position: absolute;
+      bottom: 5vh;
+      right: 25vw;
+      width: 15vw;
+      height: 15vw;
+      min-width: 75px;
+      min-height: 75px;
+      background: rgba(255, 165, 0, 0.7);
+      border: 3px solid rgba(255, 165, 0, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 5vw;
+      min-font-size: 20px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px #000;
+      pointer-events: all;
+      touch-action: manipulation;
+      user-select: none;
+    }
+    
+    .bomb-button:active {
+      transform: scale(0.95);
+      background: rgba(255, 165, 0, 0.9);
+    }
+    
+    .game-over {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ff0000;
+      font-size: 12vw;
+      min-font-size: 48px;
+      font-weight: bold;
+      text-shadow: 0 0 20px #ff0000;
+      z-index: 30;
+      text-align: center;
+      display: none;
+    }
+    
+    .restart-button {
+      position: absolute;
+      bottom: 30vh;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4vw 8vw;
+      background: rgba(0, 255, 0, 0.8);
+      border: 3px solid #00ff00;
+      border-radius: 15px;
+      color: white;
+      font-size: 6vw;
+      min-font-size: 24px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px #000;
+      pointer-events: all;
+      touch-action: manipulation;
+      user-select: none;
+      display: none;
+      z-index: 31;
+    }
+    
+    .restart-button:active {
+      transform: translateX(-50%) scale(0.95);
+      background: rgba(0, 255, 0, 1);
     }
     
     /* Animations */
@@ -549,13 +684,13 @@
     
     @keyframes run {
       0%, 100% { transform: translateY(0) rotate(0deg); }
-      25% { transform: translateY(-5px) rotate(-2deg); }
-      75% { transform: translateY(-5px) rotate(2deg); }
+      25% { transform: translateY(-2vh) rotate(-2deg); }
+      75% { transform: translateY(-2vh) rotate(2deg); }
     }
     
     @keyframes recoil {
       0% { transform: translateX(0); }
-      50% { transform: translateX(-8px); }
+      50% { transform: translateX(-2vw); }
       100% { transform: translateX(0); }
     }
     
@@ -566,23 +701,23 @@
     
     @keyframes zombie-attack {
       0% { transform: translateX(0) scale(1); }
-      50% { transform: translateX(-20px) scale(1.2); }
+      50% { transform: translateX(-5vw) scale(1.2); }
       100% { transform: translateX(0) scale(1); }
     }
     
     @keyframes glow {
-      0% { box-shadow: 0 0 5px #00ff00; }
-      100% { box-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00; }
+      0% { box-shadow: 0 0 8px #00ff00; }
+      100% { box-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00; }
     }
     
     @keyframes tired-blink {
-      0%, 90% { height: 6px; opacity: 1; }
-      95% { height: 2px; opacity: 0.5; }
+      0%, 90% { height: 100%; opacity: 1; }
+      95% { height: 30%; opacity: 0.5; }
     }
     
     @keyframes zombie-glow {
-      0% { box-shadow: 0 0 3px #ff0000; }
-      100% { box-shadow: 0 0 10px #ff0000; }
+      0% { box-shadow: 0 0 5px #ff0000; }
+      100% { box-shadow: 0 0 15px #ff0000; }
     }
     
     @keyframes flash {
@@ -622,37 +757,54 @@
     
     @keyframes damage-smoke {
       0% { opacity: 0.8; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-20px) scale(1.5); }
+      100% { opacity: 0; transform: translateY(-5vh) scale(1.5); }
     }
     
     @keyframes damage-text {
       0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 0; transform: translate(-50%, -80px) scale(1.5); }
+      100% { opacity: 0; transform: translate(-50%, -15vh) scale(1.5); }
     }
     
-    .controls {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      color: #00ff00;
-      font-family: 'Courier New', monospace;
-      font-size: 12px;
-      text-shadow: 0 0 5px #00ff00;
-      z-index: 20;
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .hud {
+        font-size: 5vw;
+      }
+      
+      .distance-marker {
+        font-size: 6vw;
+      }
+      
+      .health-text {
+        font-size: 5vw;
+      }
     }
     
-    .game-over {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: #ff0000;
-      font-size: 48px;
-      font-weight: bold;
-      text-shadow: 0 0 20px #ff0000;
-      z-index: 30;
-      text-align: center;
-      display: none;
+    @media (orientation: landscape) and (max-height: 500px) {
+      .character {
+        bottom: 40vh;
+      }
+      
+      .zombie {
+        bottom: 40vh;
+      }
+      
+      .tree {
+        bottom: 40vh;
+        height: 35vh;
+      }
+      
+      .vehicle {
+        bottom: 40vh;
+      }
+      
+      .underground {
+        height: 35vh;
+      }
+      
+      .ground-surface {
+        bottom: 35vh;
+      }
     }
   </style>
 </head>
@@ -660,9 +812,7 @@
   <div class="game-container">
     <div class="background"></div>
     
-    <div class="environment" id="environment">
-      <!-- Environment objects will be spawned here -->
-    </div>
+    <div class="environment" id="environment"></div>
     
     <div class="underground"></div>
     <div class="ground-surface"></div>
@@ -687,12 +837,11 @@
       </div>
     </div>
     
-    <div class="crosshair" id="crosshair"></div>
     <div class="damage-indicator" id="damageIndicator">-25 HP</div>
     
     <div class="health-bar">
       <div class="health-fill" id="healthFill" style="width: 100%;"></div>
-      <div class="health-text" id="healthText">100/100</div>
+      <div class="health-text" id="healthText">100</div>
     </div>
     
     <div class="progress-bar">
@@ -700,38 +849,42 @@
     </div>
     
     <div class="distance-marker">
-      DISTANCE: <span id="distance">0</span>m
+      <span id="distance">0</span>m
     </div>
     
     <div class="hud">
-      <div>AMMO: <span id="ammo">∞</span></div>
       <div>SCORE: <span id="score">0</span></div>
-      <div>ZOMBIES: <span id="zombieCount">0</span></div>
       <div>WAVE: <span id="wave">1</span></div>
     </div>
     
-    <div class="controls">
-      WASD: Move | MOUSE: Aim | CLICK: Shoot | SPACE: Bomb | ESC: Pause
+    <div class="mobile-controls">
+      <div class="joystick" id="joystick">
+        <div class="joystick-knob" id="joystickKnob"></div>
+      </div>
+      <div class="bomb-button" id="bombButton">💣</div>
+      <div class="fire-button" id="fireButton">🔥</div>
     </div>
     
     <div class="game-over" id="gameOver">
       <div>GAME OVER</div>
-      <div style="font-size: 24px; margin-top: 20px;">Press R to Restart</div>
+      <div style="font-size: 6vw; margin-top: 3vh;">Final Score: <span id="finalScore">0</span></div>
+      <div style="font-size: 4vw; margin-top: 2vh;">Distance: <span id="finalDistance">0</span>m</div>
     </div>
+    
+    <div class="restart-button" id="restartButton">RESTART</div>
   </div>
 
   <script>
-    class ZombieApocalypse {
+    class MobileZombieGame {
       constructor() {
         this.player = document.getElementById('player');
         this.weapon = document.getElementById('weapon');
         this.muzzleFlash = document.getElementById('muzzleFlash');
-        this.crosshair = document.getElementById('crosshair');
         this.gameContainer = document.querySelector('.game-container');
         this.environment = document.getElementById('environment');
         
-        this.playerPos = { x: 150, y: 250 };
-        this.mousePos = { x: 0, y: 0 };
+        this.playerPos = { x: window.innerWidth * 0.2, y: window.innerHeight * 0.33 };
+        this.joystickPos = { x: 0, y: 0 };
         this.bullets = [];
         this.zombies = [];
         this.explosions = [];
@@ -743,17 +896,21 @@
         this.maxHealth = 100;
         this.distance = 0;
         this.wave = 1;
-        this.keys = {};
-        this.lastBombTime = 0;
         this.gameRunning = true;
         this.gameSpeed = 1;
         this.lastDamageTime = 0;
+        this.lastBombTime = 0;
+        this.lastFireTime = 0;
+        this.autoShoot = false;
+        this.bombCooldown = 3000; // 3 seconds
+        this.fireCooldown = 200; // 0.2 seconds
         
         this.init();
       }
       
       init() {
         this.bindEvents();
+        this.setupProgressBar();
         this.createEnvironment();
         this.gameLoop();
         this.spawnZombies();
@@ -761,206 +918,240 @@
       }
       
       bindEvents() {
-        document.addEventListener('keydown', (e) => {
-          this.keys[e.key.toLowerCase()] = true;
-          if (e.key === ' ') {
-            e.preventDefault();
-            this.throwBomb();
+        // Mobile joystick
+        const joystick = document.getElementById('joystick');
+        const joystickKnob = document.getElementById('joystickKnob');
+        let joystickActive = false;
+        let joystickCenter = { x: 0, y: 0 };
+        
+        joystick.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          joystickActive = true;
+          const rect = joystick.getBoundingClientRect();
+          joystickCenter.x = rect.left + rect.width / 2;
+          joystickCenter.y = rect.top + rect.height / 2;
+        });
+        
+        joystick.addEventListener('touchmove', (e) => {
+          if (!joystickActive) return;
+          e.preventDefault();
+          
+          const touch = e.touches[0];
+          const deltaX = touch.clientX - joystickCenter.x;
+          const deltaY = touch.clientY - joystickCenter.y;
+          const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+          const maxDistance = joystick.offsetWidth / 2;
+          
+          if (distance <= maxDistance) {
+            this.joystickPos.x = deltaX / maxDistance;
+            this.joystickPos.y = deltaY / maxDistance;
+            joystickKnob.style.transform = `translate(-50%, -50%) translate(${deltaX}px, ${deltaY}px)`;
+          } else {
+            const angle = Math.atan2(deltaY, deltaX);
+            const limitedX = Math.cos(angle) * maxDistance;
+            const limitedY = Math.sin(angle) * maxDistance;
+            this.joystickPos.x = limitedX / maxDistance;
+            this.joystickPos.y = limitedY / maxDistance;
+            joystickKnob.style.transform = `translate(-50%, -50%) translate(${limitedX}px, ${limitedY}px)`;
           }
-          if (e.key.toLowerCase() === 'r' && !this.gameRunning) {
-            this.restart();
-          }
         });
-        
-        document.addEventListener('keyup', (e) => {
-          this.keys[e.key.toLowerCase()] = false;
+
+        joystick.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          joystickActive = false;
+          this.joystickPos.x = 0;
+          this.joystickPos.y = 0;
+          joystickKnob.style.transform = 'translate(-50%, -50%)';
         });
-        
-        document.addEventListener('mousemove', (e) => {
-          this.mousePos.x = e.clientX;
-          this.mousePos.y = e.clientY;
-          this.updateCrosshair();
-          this.aimWeapon();
+
+        // Fire button
+        const fireButton = document.getElementById('fireButton');
+        fireButton.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          this.autoShoot = true;
+          this.shoot();
         });
-        
-        document.addEventListener('click', (e) => {
-          if (this.gameRunning) {
-            this.shoot();
-          }
+
+        fireButton.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          this.autoShoot = false;
         });
+
+        // Bomb button
+        const bombButton = document.getElementById('bombButton');
+        bombButton.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          this.throwBomb();
+        });
+
+        // Restart button
+        const restartButton = document.getElementById('restartButton');
+        restartButton.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          this.restartGame();
+        });
+
+        // Prevent default touch behaviors
+        document.addEventListener('touchmove', (e) => {
+          e.preventDefault();
+        }, { passive: false });
+
+        document.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+        }, { passive: false });
       }
-      
-      createEnvironment() {
-        // Create trees
-        for (let i = 0; i < 20; i++) {
-          this.createTree(300 + i * 150 + Math.random() * 100);
-        }
-        
-        // Create vehicles
-        for (let i = 0; i < 10; i++) {
-          this.createVehicle(500 + i * 300 + Math.random() * 200);
-        }
+
+      setupProgressBar() {
+        this.progressFill = document.getElementById('progressFill');
+        this.progressTarget = 100; // Distance to next wave
+        this.progressCurrent = 0;
       }
-      
-      createTree(x) {
-        const tree = document.createElement('div');
-        tree.className = 'tree';
-        tree.style.left = x + 'px';
-        tree.innerHTML = `
-          <div class="tree-leaves"></div>
-          <div class="tree-trunk"></div>
-        `;
-        this.environment.appendChild(tree);
-        this.environmentObjects.push(tree);
-      }
-      
-      createVehicle(x) {
-        const vehicle = document.createElement('div');
-        vehicle.className = 'vehicle';
-        vehicle.style.left = x + 'px';
-        vehicle.innerHTML = `
-          <div class="car-body"></div>
-          <div class="car-windows"></div>
-          <div class="car-wheel left"></div>
-          <div class="car-wheel right"></div>
-          <div class="car-damage"></div>
-        `;
-        this.environment.appendChild(vehicle);
-        this.environmentObjects.push(vehicle);
-      }
-      
+
       updateMovement() {
-        setInterval(() => {
-          if (this.gameRunning) {
-            this.distance += 1;
-            document.getElementById('distance').textContent = this.distance;
-            document.getElementById('progressFill').style.width = ((this.distance % 100) / 100 * 100) + '%';
-            
-            if (this.distance % 100 === 0) {
-              this.wave++;
-              document.getElementById('wave').textContent = this.wave;
-              this.gameSpeed += 0.2;
-            }
+        if (!this.gameRunning) return;
+
+        // Update player position based on joystick
+        if (Math.abs(this.joystickPos.x) > 0.1 || Math.abs(this.joystickPos.y) > 0.1) {
+          const speed = 5;
+          const newX = this.playerPos.x + this.joystickPos.x * speed;
+          const newY = this.playerPos.y - this.joystickPos.y * speed;
+
+          // Boundary checks
+          const playerWidth = this.player.offsetWidth;
+          const playerHeight = this.player.offsetHeight;
+          
+          if (newX >= 0 && newX <= window.innerWidth - playerWidth) {
+            this.playerPos.x = newX;
           }
-        }, 100);
-      }
-      
-      updateCrosshair() {
-        this.crosshair.style.left = (this.mousePos.x - 15) + 'px';
-        this.crosshair.style.top = (this.mousePos.y - 15) + 'px';
-      }
-      
-      aimWeapon() {
-        const playerRect = this.player.getBoundingClientRect();
-        const playerCenterX = playerRect.left + playerRect.width / 2;
-        const playerCenterY = playerRect.top + playerRect.height / 2;
-        
-        const angle = Math.atan2(this.mousePos.y - playerCenterY, this.mousePos.x - playerCenterX);
-        this.weapon.style.transform = `rotate(${angle}rad)`;
-      }
-      
-      handleMovement() {
-        let moved = false;
-        
-        if (this.keys['a'] && this.playerPos.x > 50) {
-          this.playerPos.x -= 4;
-          moved = true;
-        }
-        if (this.keys['d'] && this.playerPos.x < window.innerWidth - 130) {
-          this.playerPos.x += 4;
-          moved = true;
-        }
-        if (this.keys['w'] && this.playerPos.y > 0) {
-          this.playerPos.y -= 4;
-          moved = true;
-        }
-        if (this.keys['s'] && this.playerPos.y < window.innerHeight - 370) {
-          this.playerPos.y += 4;
-          moved = true;
-        }
-        
-        this.player.style.left = this.playerPos.x + 'px';
-        this.player.style.bottom = this.playerPos.y + 'px';
-        
-        if (moved) {
+          
+          if (newY >= window.innerHeight * 0.2 && newY <= window.innerHeight * 0.7) {
+            this.playerPos.y = newY;
+          }
+
+          this.player.style.left = this.playerPos.x + 'px';
+          this.player.style.bottom = (window.innerHeight - this.playerPos.y - playerHeight) + 'px';
+          
           this.player.classList.add('moving');
         } else {
           this.player.classList.remove('moving');
         }
+
+        // Auto shoot
+        if (this.autoShoot) {
+          this.shoot();
+        }
+
+        requestAnimationFrame(() => this.updateMovement());
       }
-      
+
       shoot() {
-        const playerRect = this.player.getBoundingClientRect();
-        const weaponRect = this.weapon.getBoundingClientRect();
+        const now = Date.now();
+        if (now - this.lastFireTime < this.fireCooldown) return;
         
+        this.lastFireTime = now;
+        
+        // Create bullet
         const bullet = document.createElement('div');
         bullet.className = 'bullet';
-        bullet.style.left = weaponRect.right + 'px';
-        bullet.style.top = (weaponRect.top + weaponRect.height / 2) + 'px';
         
-        const angle = Math.atan2(this.mousePos.y - weaponRect.top, this.mousePos.x - weaponRect.right);
-        bullet.dataset.vx = Math.cos(angle) * 12;
-        bullet.dataset.vy = Math.sin(angle) * 12;
+        const weaponRect = this.weapon.getBoundingClientRect();
+        const bulletStartX = weaponRect.right;
+        const bulletStartY = weaponRect.top + weaponRect.height / 2;
+        
+        bullet.style.left = bulletStartX + 'px';
+        bullet.style.top = bulletStartY + 'px';
         
         this.gameContainer.appendChild(bullet);
-        this.bullets.push(bullet);
         
+        this.bullets.push({
+          element: bullet,
+          x: bulletStartX,
+          y: bulletStartY,
+          speed: 15
+        });
+
+        // Muzzle flash effect
         this.muzzleFlash.classList.add('active');
-        this.player.classList.add('shooting');
-        
         setTimeout(() => {
           this.muzzleFlash.classList.remove('active');
-          this.player.classList.remove('shooting');
         }, 100);
+
+        // Player recoil animation
+        this.player.classList.add('shooting');
+        setTimeout(() => {
+          this.player.classList.remove('shooting');
+        }, 200);
       }
-      
+
       throwBomb() {
         const now = Date.now();
-        if (now - this.lastBombTime < 2000) return;
+        if (now - this.lastBombTime < this.bombCooldown) return;
         
         this.lastBombTime = now;
         
         const bomb = document.createElement('div');
         bomb.className = 'bomb';
-        bomb.style.left = (this.playerPos.x + 40) + 'px';
-        bomb.style.bottom = (this.playerPos.y + 60) + 'px';
         
-        const targetX = this.mousePos.x;
-        const targetY = window.innerHeight - this.mousePos.y;
+        const playerRect = this.player.getBoundingClientRect();
+        const bombX = playerRect.right + 20;
+        const bombY = playerRect.top + playerRect.height / 2;
         
-        bomb.dataset.vx = (targetX - this.playerPos.x) * 0.03;
-        bomb.dataset.vy = (targetY - this.playerPos.y) * 0.03;
-        bomb.dataset.timer = 180;
+        bomb.style.left = bombX + 'px';
+        bomb.style.top = bombY + 'px';
         
         this.gameContainer.appendChild(bomb);
-        this.bombs.push(bomb);
+        
+        this.bombs.push({
+          element: bomb,
+          x: bombX,
+          y: bombY,
+          speed: 8,
+          timer: 2000 // 2 seconds until explosion
+        });
       }
-      
+
+      createEnvironment() {
+        // Create random environment objects
+        for (let i = 0; i < 10; i++) {
+          setTimeout(() => {
+            this.spawnEnvironmentObject();
+          }, i * 2000);
+        }
+      }
+
+      spawnEnvironmentObject() {
+        if (!this.gameRunning) return;
+
+        const objects = [
+          { class: 'tree', html: '<div class="tree-trunk"></div><div class="tree-leaves"></div>' },
+          { class: 'vehicle', html: '<div class="car-body"></div><div class="car-windows"></div><div class="car-wheel left"></div><div class="car-wheel right"></div><div class="car-damage"></div>' }
+        ];
+
+        const randomObj = objects[Math.floor(Math.random() * objects.length)];
+        const obj = document.createElement('div');
+        obj.className = randomObj.class;
+        obj.innerHTML = randomObj.html;
+        obj.style.right = '-20vw';
+        
+        this.environment.appendChild(obj);
+        
+        this.environmentObjects.push({
+          element: obj,
+          x: window.innerWidth + 100,
+          speed: 2 + Math.random() * 3
+        });
+
+        // Schedule next object
+        setTimeout(() => {
+          this.spawnEnvironmentObject();
+        }, 3000 + Math.random() * 4000);
+      }
+
       spawnZombies() {
-        setInterval(() => {
-          if (this.gameRunning && this.zombies.length < 6 + this.wave) {
-            this.createZombie();
-          }
-        }, Math.max(1000 - (this.wave * 100), 500));
-      }
-      
-      createZombie() {
+        if (!this.gameRunning) return;
+
         const zombie = document.createElement('div');
         zombie.className = 'zombie';
-        
-        // Random spawn positions
-        const spawnSide = Math.random() > 0.7 ? 'left' : 'right';
-        let spawnX;
-        
-        if (spawnSide === 'left') {
-          spawnX = -60;
-        } else {
-          spawnX = window.innerWidth + 60;
-        }
-        
-        zombie.style.left = spawnX + 'px';
-        zombie.style.bottom = '250px';
-        
         zombie.innerHTML = `
           <div class="zombie-head">
             <div class="zombie-eyes">
@@ -975,334 +1166,326 @@
           </div>
         `;
         
-        zombie.dataset.health = 1 + Math.floor(this.wave / 3);
-        zombie.dataset.speed = 1.5 + Math.random() * this.gameSpeed;
-        zombie.dataset.damage = 25 + (this.wave * 5);
-        zombie.dataset.lastAttack = 0;
-        zombie.dataset.spawnSide = spawnSide;
+        zombie.style.right = '-15vw';
+        zombie.style.bottom = '33vh';
         
         this.gameContainer.appendChild(zombie);
-        this.zombies.push(zombie);
         
-        document.getElementById('zombieCount').textContent = this.zombies.length;
+        this.zombies.push({
+          element: zombie,
+          x: window.innerWidth + 100,
+          y: window.innerHeight * 0.33,
+          health: 3,
+          speed: 1 + Math.random() * 2,
+          attacking: false,
+          lastAttack: 0
+        });
+
+        // Schedule next zombie based on wave
+        const spawnDelay = Math.max(500, 3000 - (this.wave * 200));
+        setTimeout(() => {
+          this.spawnZombies();
+        }, spawnDelay);
       }
-      
+
       updateBullets() {
         this.bullets.forEach((bullet, index) => {
-          const vx = parseFloat(bullet.dataset.vx);
-          const vy = parseFloat(bullet.dataset.vy);
+          bullet.x += bullet.speed;
+          bullet.element.style.left = bullet.x + 'px';
           
-          const currentLeft = parseFloat(bullet.style.left);
-          const currentTop = parseFloat(bullet.style.top);
-          
-          bullet.style.left = (currentLeft + vx) + 'px';
-          bullet.style.top = (currentTop + vy) + 'px';
-          
-          if (currentLeft > window.innerWidth + 50 || currentLeft < -50 || 
-              currentTop > window.innerHeight + 50 || currentTop < -50) {
-            bullet.remove();
+          // Remove bullets that are off screen
+          if (bullet.x > window.innerWidth + 50) {
+            bullet.element.remove();
             this.bullets.splice(index, 1);
           }
         });
       }
-      
+
       updateBombs() {
         this.bombs.forEach((bomb, index) => {
-          const vx = parseFloat(bomb.dataset.vx);
-          const vy = parseFloat(bomb.dataset.vy);
-          let timer = parseInt(bomb.dataset.timer);
+          bomb.x += bomb.speed;
+          bomb.timer -= 16; // Roughly 60fps
           
-          const currentLeft = parseFloat(bomb.style.left);
-          const currentBottom = parseFloat(bomb.style.bottom);
+          bomb.element.style.left = bomb.x + 'px';
           
-          bomb.style.left = (currentLeft + vx) + 'px';
-          bomb.style.bottom = (currentBottom + vy) + 'px';
-          
-          timer--;
-          bomb.dataset.timer = timer;
-          
-          if (timer <= 0) {
-            this.explodeBomb(bomb, currentLeft, currentBottom);
-            bomb.remove();
+          // Explode bomb
+          if (bomb.timer <= 0 || bomb.x > window.innerWidth + 50) {
+            this.explodeBomb(bomb.x, bomb.y);
+            bomb.element.remove();
             this.bombs.splice(index, 1);
           }
         });
       }
-      
-      explodeBomb(bomb, x, y) {
+
+      explodeBomb(x, y) {
         const explosion = document.createElement('div');
         explosion.className = 'explosion';
         explosion.style.left = (x - 75) + 'px';
-        explosion.style.bottom = (y - 75) + 'px';
-        explosion.style.width = '150px';
-        explosion.style.height = '150px';
-        explosion.style.animation = 'explode 1s ease-out';
+        explosion.style.top = (y - 75) + 'px';
+        explosion.style.animation = 'explode 0.8s ease-out';
         
         this.gameContainer.appendChild(explosion);
         
+        // Remove zombies in explosion radius
         this.zombies.forEach((zombie, index) => {
-          const zombieRect = zombie.getBoundingClientRect();
-          const zombieX = zombieRect.left + zombieRect.width / 2;
-          const zombieY = window.innerHeight - zombieRect.bottom;
+          const zombieRect = zombie.element.getBoundingClientRect();
+          const distance = Math.sqrt(
+            Math.pow(zombieRect.left - x, 2) + 
+            Math.pow(zombieRect.top - y, 2)
+          );
           
-          const distance = Math.sqrt((zombieX - x) ** 2 + (zombieY - y) ** 2);
-          
-          if (distance < 100) {
-            this.destroyZombie(zombie, index);
-            this.score += 75;
+          if (distance < 150) {
+            this.killZombie(index);
           }
         });
         
         setTimeout(() => {
           explosion.remove();
-        }, 1000);
+        }, 800);
       }
-      
+
       updateZombies() {
         this.zombies.forEach((zombie, index) => {
-          const speed = parseFloat(zombie.dataset.speed);
-          const spawnSide = zombie.dataset.spawnSide;
-          const currentLeft = parseFloat(zombie.style.left);
+          zombie.x -= zombie.speed * this.gameSpeed;
+          zombie.element.style.right = (window.innerWidth - zombie.x) + 'px';
           
-          // Move zombie towards player
+          // Check collision with player
+          const zombieRect = zombie.element.getBoundingClientRect();
           const playerRect = this.player.getBoundingClientRect();
-          const zombieRect = zombie.getBoundingClientRect();
           
-          const deltaX = playerRect.left - zombieRect.left;
-          const deltaY = playerRect.top - zombieRect.top;
-          const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-          
-          if (distance > 50) {
-            // Move towards player
-            const moveX = (deltaX / distance) * speed;
-            const moveY = (deltaY / distance) * speed;
-            
-            zombie.style.left = (currentLeft + moveX) + 'px';
-            zombie.style.bottom = (parseFloat(zombie.style.bottom) - moveY) + 'px';
-          } else {
-            // Attack player
-            this.zombieAttack(zombie, index);
+          if (this.isColliding(zombieRect, playerRect)) {
+            const now = Date.now();
+            if (!zombie.attacking && now - zombie.lastAttack > 1000) {
+              zombie.attacking = true;
+              zombie.lastAttack = now;
+              zombie.element.classList.add('attacking');
+              
+              this.takeDamage(25);
+              
+              setTimeout(() => {
+                if (zombie.element) {
+                  zombie.element.classList.remove('attacking');
+                  zombie.attacking = false;
+                }
+              }, 500);
+            }
           }
           
-          // Remove zombies that are too far away
-          if (currentLeft < -200 || currentLeft > window.innerWidth + 200) {
-            zombie.remove();
+          // Remove zombies that are off screen
+          if (zombie.x < -100) {
+            zombie.element.remove();
             this.zombies.splice(index, 1);
-            document.getElementById('zombieCount').textContent = this.zombies.length;
           }
         });
       }
-      
-      zombieAttack(zombie, index) {
-        const now = Date.now();
-        const lastAttack = parseInt(zombie.dataset.lastAttack);
-        const damage = parseInt(zombie.dataset.damage);
-        
-        if (now - lastAttack > 1500) { // Attack every 1.5 seconds
-          zombie.dataset.lastAttack = now;
-          zombie.classList.add('attacking');
-          
-          setTimeout(() => {
-            zombie.classList.remove('attacking');
-          }, 500);
-          
-          this.takeDamage(damage);
-        }
-      }
-      
-      takeDamage(amount) {
-        const now = Date.now();
-        if (now - this.lastDamageTime < 500) return; // Damage immunity frames
-        
-        this.lastDamageTime = now;
-        this.health = Math.max(0, this.health - amount);
-        
-        // Update health bar
-        const healthPercentage = (this.health / this.maxHealth) * 100;
-        document.getElementById('healthFill').style.width = healthPercentage + '%';
-        document.getElementById('healthText').textContent = `${this.health}/${this.maxHealth}`;
-        
-        // Show damage indicator
-        const damageIndicator = document.getElementById('damageIndicator');
-        damageIndicator.textContent = `-${amount} HP`;
-        damageIndicator.style.animation = 'damage-text 1s ease-out';
-        
-        setTimeout(() => {
-          damageIndicator.style.animation = '';
-        }, 1000);
-        
-        // Player damage effects
-        this.player.classList.add('damaged');
-        setTimeout(() => {
-          this.player.classList.remove('damaged');
-        }, 500);
-        
-        // Update player appearance based on health
-        this.updatePlayerAppearance();
-        
-        // Check game over
-        if (this.health <= 0) {
-          this.gameOver();
-        }
-      }
-      
-      updatePlayerAppearance() {
-        const helmet = document.getElementById('helmet');
-        const armorVest = document.getElementById('armorVest');
-        const leftEye = document.getElementById('leftEye');
-        const rightEye = document.getElementById('rightEye');
-        
-        if (this.health < 30) {
-          helmet.classList.add('damaged');
-          armorVest.classList.add('damaged');
-          leftEye.classList.add('tired');
-          rightEye.classList.add('tired');
-        } else if (this.health < 60) {
-          armorVest.classList.add('damaged');
-        }
-      }
-      
-      checkCollisions() {
+
+      updateCollisions() {
         // Bullet vs Zombie collisions
         this.bullets.forEach((bullet, bulletIndex) => {
-          const bulletRect = bullet.getBoundingClientRect();
-          
           this.zombies.forEach((zombie, zombieIndex) => {
-            const zombieRect = zombie.getBoundingClientRect();
+            const bulletRect = bullet.element.getBoundingClientRect();
+            const zombieRect = zombie.element.getBoundingClientRect();
             
-            if (bulletRect.left < zombieRect.right &&
-                bulletRect.right > zombieRect.left &&
-                bulletRect.top < zombieRect.bottom &&
-                bulletRect.bottom > zombieRect.top) {
-              
-              bullet.remove();
+            if (this.isColliding(bulletRect, zombieRect)) {
+              // Remove bullet
+              bullet.element.remove();
               this.bullets.splice(bulletIndex, 1);
               
-              let health = parseInt(zombie.dataset.health);
-              health--;
-              
-              if (health <= 0) {
-                this.destroyZombie(zombie, zombieIndex);
-                this.score += 15 + (this.wave * 5);
-              } else {
-                zombie.dataset.health = health;
-                // Visual feedback for hit
-                zombie.style.filter = 'brightness(2) hue-rotate(90deg)';
-                setTimeout(() => {
-                  zombie.style.filter = '';
-                }, 200);
+              // Damage zombie
+              zombie.health--;
+              if (zombie.health <= 0) {
+                this.killZombie(zombieIndex);
               }
             }
           });
         });
       }
-      
-      destroyZombie(zombie, index) {
-        const zombieRect = zombie.getBoundingClientRect();
-        const explosion = document.createElement('div');
-        explosion.className = 'explosion';
-        explosion.style.left = (zombieRect.left - 25) + 'px';
-        explosion.style.top = (zombieRect.top - 25) + 'px';
-        explosion.style.width = '70px';
-        explosion.style.height = '70px';
-        explosion.style.animation = 'explode 0.6s ease-out';
-        explosion.style.background = 'radial-gradient(circle, #ff0000 0%, #ff6600 40%, #8B0000 70%, transparent 100%)';
+
+      killZombie(index) {
+        if (this.zombies[index]) {
+          this.zombies[index].element.remove();
+          this.zombies.splice(index, 1);
+          this.score += 10;
+          this.updateScore();
+        }
+      }
+
+      isColliding(rect1, rect2) {
+        return !(rect1.right < rect2.left || 
+                rect1.left > rect2.right || 
+                rect1.bottom < rect2.top || 
+                rect1.top > rect2.bottom);
+      }
+
+      takeDamage(amount) {
+        const now = Date.now();
+        if (now - this.lastDamageTime < 500) return; // Damage immunity
         
-        this.gameContainer.appendChild(explosion);
+        this.lastDamageTime = now;
+        this.health -= amount;
         
-        zombie.remove();
-        this.zombies.splice(index, 1);
+        if (this.health < 0) this.health = 0;
         
-        document.getElementById('score').textContent = this.score;
-        document.getElementById('zombieCount').textContent = this.zombies.length;
+        this.updateHealth();
+        this.showDamageIndicator(amount);
+        
+        // Visual damage effect
+        this.player.classList.add('damaged');
+        setTimeout(() => {
+          this.player.classList.remove('damaged');
+        }, 500);
+        
+        // Update armor/helmet damage visual
+        if (this.health < 70) {
+          document.getElementById('helmet').classList.add('damaged');
+          document.getElementById('armorVest').classList.add('damaged');
+        }
+        
+        if (this.health < 30) {
+          document.getElementById('leftEye').classList.add('tired');
+          document.getElementById('rightEye').classList.add('tired');
+        }
+        
+        if (this.health <= 0) {
+          this.gameOver();
+        }
+      }
+
+      showDamageIndicator(amount) {
+        const indicator = document.getElementById('damageIndicator');
+        indicator.textContent = `-${amount} HP`;
+        indicator.style.animation = 'damage-text 1s ease-out';
         
         setTimeout(() => {
-          explosion.remove();
-        }, 600);
+          indicator.style.animation = '';
+        }, 1000);
       }
-      
+
+      updateHealth() {
+        const healthPercentage = (this.health / this.maxHealth) * 100;
+        document.getElementById('healthFill').style.width = healthPercentage + '%';
+        document.getElementById('healthText').textContent = this.health;
+      }
+
+      updateScore() {
+        document.getElementById('score').textContent = this.score;
+      }
+
+      updateDistance() {
+        this.distance += this.gameSpeed;
+        document.getElementById('distance').textContent = Math.floor(this.distance);
+        
+        // Update progress bar
+        this.progressCurrent = this.distance % this.progressTarget;
+        const progressPercentage = (this.progressCurrent / this.progressTarget) * 100;
+        this.progressFill.style.width = progressPercentage + '%';
+        
+        // Check for wave progression
+        if (this.distance > 0 && this.distance % this.progressTarget === 0) {
+          this.nextWave();
+        }
+      }
+
+      nextWave() {
+        this.wave++;
+        this.gameSpeed += 0.2;
+        document.getElementById('wave').textContent = this.wave;
+        
+        // Show wave indicator (you could add visual feedback here)
+        console.log(`Wave ${this.wave}!`);
+      }
+
+      updateEnvironment() {
+        this.environmentObjects.forEach((obj, index) => {
+          obj.x -= obj.speed * this.gameSpeed;
+          obj.element.style.right = (window.innerWidth - obj.x) + 'px';
+          
+          if (obj.x < -200) {
+            obj.element.remove();
+            this.environmentObjects.splice(index, 1);
+          }
+        });
+      }
+
+      gameLoop() {
+        if (!this.gameRunning) return;
+        
+        this.updateBullets();
+        this.updateBombs();
+        this.updateZombies();
+        this.updateCollisions();
+        this.updateDistance();
+        this.updateEnvironment();
+        
+        requestAnimationFrame(() => this.gameLoop());
+      }
+
       gameOver() {
         this.gameRunning = false;
+        
+        document.getElementById('finalScore').textContent = this.score;
+        document.getElementById('finalDistance').textContent = Math.floor(this.distance);
         document.getElementById('gameOver').style.display = 'block';
-        
-        // Stop all animations
-        this.player.classList.remove('moving', 'shooting');
-        
-        // Final score display
-        const finalScore = document.createElement('div');
-        finalScore.style.fontSize = '18px';
-        finalScore.style.marginTop = '10px';
-        finalScore.innerHTML = `
-          Final Score: ${this.score}<br>
-          Distance: ${this.distance}m<br>
-          Wave Reached: ${this.wave}
-        `;
-        document.getElementById('gameOver').appendChild(finalScore);
+        document.getElementById('restartButton').style.display = 'block';
       }
-      
-      restart() {
+
+      restartGame() {
         // Reset game state
-        this.health = 100;
+        this.gameRunning = true;
         this.score = 0;
+        this.health = 100;
         this.distance = 0;
         this.wave = 1;
         this.gameSpeed = 1;
-        this.gameRunning = true;
-        this.playerPos = { x: 150, y: 250 };
+        this.lastDamageTime = 0;
+        this.lastBombTime = 0;
+        this.lastFireTime = 0;
+        this.progressCurrent = 0;
         
         // Clear arrays
-        this.bullets.forEach(bullet => bullet.remove());
-        this.zombies.forEach(zombie => zombie.remove());
-        this.bombs.forEach(bomb => bomb.remove());
+        this.bullets.forEach(bullet => bullet.element.remove());
+        this.zombies.forEach(zombie => zombie.element.remove());
+        this.bombs.forEach(bomb => bomb.element.remove());
+        this.environmentObjects.forEach(obj => obj.element.remove());
+        
         this.bullets = [];
         this.zombies = [];
         this.bombs = [];
+        this.environmentObjects = [];
         
         // Reset UI
-        document.getElementById('healthFill').style.width = '100%';
-        document.getElementById('healthText').textContent = '100/100';
-        document.getElementById('score').textContent = '0';
+        this.updateHealth();
+        this.updateScore();
+        document.getElementById('wave').textContent = this.wave;
         document.getElementById('distance').textContent = '0';
-        document.getElementById('wave').textContent = '1';
-        document.getElementById('zombieCount').textContent = '0';
-        document.getElementById('progressFill').style.width = '0%';
-        document.getElementById('gameOver').style.display = 'none';
+        this.progressFill.style.width = '0%';
         
-        // Reset player appearance
+        // Reset player visuals
         document.getElementById('helmet').classList.remove('damaged');
         document.getElementById('armorVest').classList.remove('damaged');
         document.getElementById('leftEye').classList.remove('tired');
         document.getElementById('rightEye').classList.remove('tired');
         
+        // Hide game over screen
+        document.getElementById('gameOver').style.display = 'none';
+        document.getElementById('restartButton').style.display = 'none';
+        
         // Reset player position
+        this.playerPos = { x: window.innerWidth * 0.2, y: window.innerHeight * 0.33 };
         this.player.style.left = this.playerPos.x + 'px';
-        this.player.style.bottom = this.playerPos.y + 'px';
+        this.player.style.bottom = (window.innerHeight - this.playerPos.y - this.player.offsetHeight) + 'px';
         
-        // Clear game over content
-        const gameOverDiv = document.getElementById('gameOver');
-        gameOverDiv.innerHTML = `
-          <div>GAME OVER</div>
-          <div style="font-size: 24px; margin-top: 20px;">Press R to Restart</div>
-        `;
-      }
-      
-      gameLoop() {
-        if (this.gameRunning) {
-          this.handleMovement();
-          this.updateBullets();
-          this.updateBombs();
-          this.updateZombies();
-          this.checkCollisions();
-        }
-        
-        requestAnimationFrame(() => this.gameLoop());
+        // Restart game loops
+        this.createEnvironment();
+        this.spawnZombies();
+        this.gameLoop();
       }
     }
-    
-    // Start the game
+
+    // Start the game when the page loads
     window.addEventListener('load', () => {
-      new ZombieApocalypse();
+      new MobileZombieGame();
     });
   </script>
 </body>
-  </html>
+</html>
